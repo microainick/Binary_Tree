@@ -10,6 +10,7 @@ public class Brain
   public static int wc = 0;  // for array size
   public static String s;
   public static int numLines = 0;
+  public static BufferedWriter fileOut;
 
   public static void main(String[] args)
   {
@@ -18,31 +19,51 @@ public class Brain
     String[] allWordsArray = fillInputArray(arraySize);
     FancyString[] outputArray = fillInputArrayFancy(arraySize);
     String[] noDupesArray = alphaSort(Arrays.stream(allWordsArray).distinct().toArray(String[]::new));
-    Tree myTree = new Tree();
+    openFileOut();
+    myWriter(noDupesArray, outputArray);
+
+  } //end main
+
+  public static void myWriter(String[] noDupesArray, FancyString[] outputArray)
+  {
+    String content;
+    openFileOut();
     System.out.println("\n\n\n ");
+    writeLineToFile("* * * * * * * * * * * * * * * * * * * *\n");
+    writeLineToFile("*                                     *\n");
+    writeLineToFile("*     Developer:  Nicholas Marien     *\n");
+    writeLineToFile("*     CSCI 362 Data Structures        *\n");
+    writeLineToFile("*     March 2020                      *\n");
+    writeLineToFile("*                                     *\n");
+    writeLineToFile("* * * * * * * * * * * * * * * * * * * *\n\n");
     for (int x = 0; x < noDupesArray.length; x++)
     {
       System.out.print("\n" + noDupesArray[x]);
+      content = String.format("\n %1$s",noDupesArray[x]);
+      writeLineToFile(content);
       for (int p = 0; p < (16 - noDupesArray[x].length()); p++)
       {
         System.out.print(" ");
+        writeLineToFile(" ");
       } //end for loop p
       for (int y = 0; y < outputArray.length; y++)
       {
-        //int var1 = str1.compareTo( str2 );
         if (noDupesArray[x].compareTo(outputArray[y].data) == 0)
         {
           System.out.print(outputArray[y].rowNum);
-          //System.out.println("hello");
+          content = String.format("%1$d", outputArray[y].rowNum);
+          writeLineToFile(content);
           for (int q = 0; q < (6 - (String.valueOf(outputArray[y].rowNum).length()));q++)
           {
             System.out.print(" ");
+            writeLineToFile(" ");
           }
         } //end if
       } //end for loop y
     } //end for loop x
     System.out.println("\n\n\n ");
-  } //end main
+  closeOutputFile();
+  }
 
   public static void getFileNameAndPath()
   {
@@ -53,7 +74,12 @@ public class Brain
     System.out.println("\nPlease Enter the full absolute path of the file "
         + "\nThen, without spaces, enter ~ "
         + "Then enter the name of the file.\n"
-        + "i.e.  /Users/nic/spring20/csci/tree/~le.txt\n");
+        + "i.e.  /Users/nic/spring20/csci/tree/~le.txt\n"
+        + "or\n"
+        + "/Users/nic/spring20/csci/tree/~le2.txt\n");
+
+
+
     inputData = scanIn.nextLine();
     String[] inputDataArray = inputData.split("~");
     filePath = inputDataArray[0];
@@ -61,6 +87,44 @@ public class Brain
     inputFile = new File(filePath, fileName);
     scanIn.close();
   }  // end method getFileNameAndPath()
+
+
+  private static void openFileOut()
+  {
+    try
+    {
+      FileWriter writer = new FileWriter("Data.log");
+      fileOut = new BufferedWriter(writer);
+    }
+    catch (IOException e)
+    {
+      System.out.println(e);
+    }
+  } // end openFileOut
+
+  public static void writeLineToFile(String contnt)
+  {
+    try
+    {
+      fileOut.write(contnt);
+    }
+    catch(IOException e)
+    {
+      System.out.println(e);
+    }
+  } // end method writeLineToFille
+
+  public static void closeOutputFile()
+  {
+    try
+    {
+      fileOut.close();
+    }
+    catch(IOException e)
+    {
+      System.out.println(e);
+    }
+  } // end method closeOutputFiles()
 
   public static void openInputFile()
   {

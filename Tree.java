@@ -8,12 +8,13 @@ public class Tree
         if (i < arr.length) {
             Tnode temp = new Tnode(arr[i]);
             root = temp;
-
+            System.out.println("\ni is:  " + i + "\n");
             // insert left child
             root.left = insert_og_order(arr, root.left, 2 * i + 1);
-
+            System.out.println("\ni is:  " + i + "\n");
             // insert right child
             root.right = insert_og_order(arr, root.right, 2 * i + 2);
+            System.out.println("\ni is:  " + i + "\n");
         }
         return root;
     }
